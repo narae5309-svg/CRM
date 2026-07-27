@@ -744,12 +744,12 @@
   // ================= CONTRACTS =================
   function renderContracts(){
     let list = state.contracts;
-    if(state.ctrStage==='경영지원요청') list = list.filter(c=>c.request && c.request!=='없음');
+    if(state.ctrStage==='요청') list = list.filter(c=>c.request && c.request!=='없음');
     else if(state.ctrStage!=='전체') list = list.filter(c=>c.stage===state.ctrStage);
     if(state.filterText) list = list.filter(c=>c.name.includes(state.filterText));
     const counts = {'전체':state.contracts.length};
     STAGES_CTR.forEach(s=>counts[s]=state.contracts.filter(c=>c.stage===s).length);
-    counts['경영지원요청'] = state.contracts.filter(c=>c.request && c.request!=='없음').length;
+    counts['요청'] = state.contracts.filter(c=>c.request && c.request!=='없음').length;
     const totalAmt = list.reduce((s,c)=>s+Number(c.amount||0),0);
     const expiring = state.contracts.filter(c=>{
       if(!c.expiryDate) return false;
@@ -764,7 +764,7 @@
         ${expiring.map(c=>`<div class="alert-item"><span>${esc(c.name)} · ${esc(custName(c.customerId))}</span><span><span class="badge warn">D-${daysUntil(c.expiryDate)}</span> ${esc(c.expiryDate)}</span></div>`).join('')}
       </div>`}
       <div class="tabs">
-        ${['전체',...STAGES_CTR,'경영지원요청'].map(s=>`<div class="tab-btn ${state.ctrStage===s?'active':''}" data-stage="${s}">${s} <span class="cnt">${counts[s]}</span></div>`).join('')}
+        ${['전체',...STAGES_CTR,'요청'].map(s=>`<div class="tab-btn ${state.ctrStage===s?'active':''}" data-stage="${s}">${s} <span class="cnt">${counts[s]}</span></div>`).join('')}
       </div>
       <div class="toolbar">
         <input id="ctrFilter" placeholder="계약명 검색" value="${esc(state.filterText)}" style="width:220px;"/>
@@ -810,7 +810,7 @@
         {k:'customerId',label:'고객사',type:'select',opts:sortedCustomers().map(x=>({v:x.id,l:x.name}))},
         {k:'bizType',label:'사업유형',type:'select',opts:BIZ_TYPES},
         {k:'stage',label:'계약단계',type:'select',opts:STAGES_CTR},
-        {k:'request',label:'요청 (경영지원요청)',type:'select',opts:REQUEST_TYPES},
+        {k:'request',label:'요청 (요청)',type:'select',opts:REQUEST_TYPES},
         {k:'contractDate',label:'계약일',type:'date'},
         {k:'expiryDate',label:'계약 만료일',type:'date'},
         {k:'alertDays',label:'만료 알림 (며칠 전부터 표시)',type:'number'},
