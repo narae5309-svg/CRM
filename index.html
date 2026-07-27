@@ -219,16 +219,16 @@
       rows = state.reps.map(r=>({'이름':r.name,'연락처':r.phone,'이메일':r.email,'부서':r.dept}));
       filename='담당자관리.xlsx';
     } else if(state.tab==='opportunities'){
-      rows = state.opportunities.map(o=>({'영업기회명':o.name,'고객사':custName(o.customerId),'사업유형':o.bizType,'계약예상일':o.expectedDate,'계약예상금액':o.expectedAmount,'영업담당':o.salesRep,'단계':o.stage,'비고':o.remarks||''}));
+      rows = state.opportunities.map(o=>({'영업기회명':o.name,'고객사':custName(o.customerId),'벤더사':o.bizType,'계약예상일':o.expectedDate,'계약예상금액':o.expectedAmount,'영업담당':o.salesRep,'단계':o.stage,'비고':o.remarks||''}));
       filename='영업기회관리.xlsx';
     } else if(state.tab==='contracts'){
-      rows = state.contracts.map(c=>({'계약코드':c.code,'계약명':c.name,'고객사':custName(c.customerId),'사업유형':c.bizType,'단계':c.stage,'요청':c.request,'계약일':c.contractDate,'계약금액':c.amount,'이익금액':c.profitAmount,'만료일':c.expiryDate||'','구매담당자':c.buyerContact||'','구매담당자이메일':c.buyerEmail||'','계산서발행일자':c.invoiceDate||'','영업담당':c.salesRep,'비고':c.remarks||''}));
+      rows = state.contracts.map(c=>({'계약코드':c.code,'계약명':c.name,'고객사':custName(c.customerId),'벤더사':c.bizType,'단계':c.stage,'요청':c.request,'계약일':c.contractDate,'계약금액':c.amount,'이익금액':c.profitAmount,'만료일':c.expiryDate||'','구매담당자':c.buyerContact||'','구매담당자이메일':c.buyerEmail||'','계산서발행일자':c.invoiceDate||'','영업담당':c.salesRep,'비고':c.remarks||''}));
       filename='계약관리.xlsx';
     } else if(state.tab==='maintenance'){
       rows = state.maintenance.map(m=>({'계약코드':contractCode(m.contractId),'유지보수명':m.name,'고객사':contractCustomerName(m.contractId),'시작일':m.startDate||'','종료일':m.endDate||'','결제주기':m.billingCycle,'금액':m.amount,'갱신여부':m.renewalType,'담당자':m.salesRep,'비고':m.remarks||''}));
       filename='유지보수관리.xlsx';
     } else if(state.tab==='stats' || state.tab==='dashboard'){
-      rows = state.contracts.map(c=>({'계약코드':c.code,'계약명':c.name,'고객사':custName(c.customerId),'사업유형':c.bizType,'영업담당':c.salesRep,'계약일':c.contractDate,'계약금액':c.amount,'이익금액':c.profitAmount}));
+      rows = state.contracts.map(c=>({'계약코드':c.code,'계약명':c.name,'고객사':custName(c.customerId),'벤더사':c.bizType,'영업담당':c.salesRep,'계약일':c.contractDate,'계약금액':c.amount,'이익금액':c.profitAmount}));
       filename='계약데이터.xlsx';
     }
     if(rows.length===0){ alert('내보낼 데이터가 없습니다.'); return; }
@@ -660,13 +660,13 @@
         <button class="btn-primary" style="width:auto; padding:8px 16px;" id="addOppBtn">+ 영업기회 추가</button>
         <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
           <input id="oppFilter" placeholder="영업기회명 검색" value="${esc(state.filterText)}" style="width:200px;"/>
-          <select id="oppBizFilterSel"><option value="전체">사업유형 전체</option>${BIZ_TYPES.map(b=>`<option value="${b}" ${state.oppFilterBiz===b?'selected':''}>${b}</option>`).join('')}</select>
+          <select id="oppBizFilterSel"><option value="전체">벤더사 전체</option>${BIZ_TYPES.map(b=>`<option value="${b}" ${state.oppFilterBiz===b?'selected':''}>${b}</option>`).join('')}</select>
           <select id="oppRepFilterSel"><option value="전체">영업담당 전체</option>${repOpts.map(r=>`<option value="${esc(r)}" ${state.oppFilterRep===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
         </div>
       </div>
       <div class="card" style="padding:0;">
         ${list.length===0?'<div class="empty">해당 조건의 영업기회가 없습니다.</div>':`
-        <table><thead><tr><th>영업기회명</th><th>고객사</th><th>사업유형</th><th>계약예상일</th><th>계약예상금액</th><th>영업담당</th><th style="text-align:center;">단계</th><th></th></tr></thead>
+        <table><thead><tr><th>영업기회명</th><th>고객사</th><th>벤더사</th><th>계약예상일</th><th>계약예상금액</th><th>영업담당</th><th style="text-align:center;">단계</th><th></th></tr></thead>
         <tbody>${list.map(o=>{
           const isOpen = state.oppExpandedId===o.id;
           let rows = `<tr>
@@ -747,7 +747,7 @@
         <div class="field"><label>영업기회명</label><input id="omName" value="${esc(d.name)}"/></div>
         <div class="grid-2">
           <div class="field"><label>고객사</label><select id="omCustomer"><option value="">선택 안함</option>${sortedCustomers().map(c=>`<option value="${c.id}" ${d.customerId===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
-          <div class="field"><label>사업유형</label><select id="omBizType">${BIZ_TYPES.map(b=>`<option ${d.bizType===b?'selected':''}>${b}</option>`).join('')}</select></div>
+          <div class="field"><label>벤더사</label><select id="omBizType">${BIZ_TYPES.map(b=>`<option ${d.bizType===b?'selected':''}>${b}</option>`).join('')}</select></div>
         </div>
         <div class="grid-3">
           <div class="field"><label>영업기회단계</label><select id="omStage">${STAGES_OPP.map(s=>`<option ${d.stage===s?'selected':''}>${s}</option>`).join('')}</select></div>
@@ -882,14 +882,14 @@
         <button class="btn-primary" style="width:auto; padding:8px 16px;" id="addCtrBtn">+ 수주완료 기회에서 계약 추가</button>
         <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
           <input id="ctrFilter" placeholder="계약명 검색" value="${esc(state.filterText)}" style="width:200px;"/>
-          <select id="ctrBizFilterSel"><option value="전체">사업유형 전체</option>${BIZ_TYPES.map(b=>`<option value="${b}" ${state.ctrFilterBiz===b?'selected':''}>${b}</option>`).join('')}</select>
+          <select id="ctrBizFilterSel"><option value="전체">벤더사 전체</option>${BIZ_TYPES.map(b=>`<option value="${b}" ${state.ctrFilterBiz===b?'selected':''}>${b}</option>`).join('')}</select>
           <select id="ctrRepFilterSel"><option value="전체">영업담당 전체</option>${repOpts.map(r=>`<option value="${esc(r)}" ${state.ctrFilterRep===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
           <select id="ctrReqFilterSel"><option value="전체">요청 전체</option>${REQUEST_TYPES.map(r=>`<option value="${r}" ${state.ctrFilterRequest===r?'selected':''}>${r}</option>`).join('')}</select>
         </div>
       </div>
       <div class="card" style="padding:0;">
         ${list.length===0?'<div class="empty">해당 조건의 계약이 없습니다.</div>':`
-        <table><thead><tr><th>계약코드</th><th>계약명</th><th>고객사</th><th>사업유형</th><th style="text-align:center;">단계</th><th style="text-align:center;">요청</th><th>계약일</th><th>계약금액</th><th>이익금액</th><th>만료일</th><th>영업담당</th><th></th></tr></thead>
+        <table><thead><tr><th>계약코드</th><th>계약명</th><th>고객사</th><th>벤더사</th><th style="text-align:center;">단계</th><th style="text-align:center;">요청</th><th>계약일</th><th>계약금액</th><th>이익금액</th><th>만료일</th><th>영업담당</th><th></th></tr></thead>
         <tbody>${list.map(c=>{
           const isOpen = state.ctrExpandedId===c.id;
           const reqBadge = c.request==='계산서 요청' ? `<span class="badge gold">계산서 요청</span>` : c.request==='완료' ? `<span class="badge green">완료</span>` : '-';
@@ -951,7 +951,7 @@
       fields:[
         {k:'name',label:'계약명',type:'text'},
         {k:'customerId',label:'고객사',type:'select',opts:sortedCustomers().map(x=>({v:x.id,l:x.name}))},
-        {k:'bizType',label:'사업유형',type:'select',opts:BIZ_TYPES},
+        {k:'bizType',label:'벤더사',type:'select',opts:BIZ_TYPES},
         {k:'stage',label:'계약단계',type:'select',opts:STAGES_CTR},
         {k:'request',label:'요청 (경영지원요청)',type:'select',opts:REQUEST_TYPES},
         {k:'contractDate',label:'계약일',type:'date'},
@@ -1199,7 +1199,7 @@
     const totalProfit = state.contracts.reduce((s,c)=>s+Number(c.profitAmount||0),0);
     return `
       <div class="page-title">통합분석</div>
-      <div class="page-sub">기간 단위와 키워드로 계약 현황을 조회합니다. 아래 기간을 선택하면 담당자별·사업유형별 현황도 같은 기간 기준으로 조회됩니다.</div>
+      <div class="page-sub">기간 단위와 키워드로 계약 현황을 조회합니다. 아래 기간을 선택하면 담당자별·벤더사별 현황도 같은 기간 기준으로 조회됩니다.</div>
       <div class="stat-row">
         <div class="stat-box"><div class="num">${state.contracts.length}</div><div class="lbl">총 계약 건수</div></div>
         <div class="stat-box blue"><div class="num">${won(totalAmt)}</div><div class="lbl">총 계약금액</div></div>
@@ -1224,7 +1224,7 @@
         <div class="bar-row"><div class="bar-label">${esc(name)}</div><div class="bar-track"><div class="bar-fill" style="width:${(v.amount/maxRep*100).toFixed(1)}%"></div></div><div class="bar-val">${won(v.amount)} (${v.count}건)</div></div>`).join('')}
       </div>
 
-      <div class="card"><h3>사업유형별 계약 현황 <span style="color:var(--ink-soft); font-weight:400; text-transform:none; font-size:11.5px;">(${state.statsPeriodValue})</span></h3>
+      <div class="card"><h3>벤더사별 계약 현황 <span style="color:var(--ink-soft); font-weight:400; text-transform:none; font-size:11.5px;">(${state.statsPeriodValue})</span></h3>
         ${bizRows.length===0?'<div class="empty">데이터가 없습니다.</div>':bizRows.map(([name,v])=>`
         <div class="bar-row"><div class="bar-label">${esc(name)}</div><div class="bar-track"><div class="bar-fill blue" style="width:${(v.amount/maxBiz*100).toFixed(1)}%"></div></div><div class="bar-val">${won(v.amount)} (${v.count}건)</div></div>`).join('')}
       </div>`;
