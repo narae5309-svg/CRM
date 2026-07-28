@@ -895,7 +895,7 @@
       </div>
       <div class="card" style="padding:0;">
         ${list.length===0?'<div class="empty">해당 조건의 계약이 없습니다.</div>':`
-        <table><thead><tr><th>계약코드</th><th>계약명</th><th>고객사</th><th>벤더사</th><th style="text-align:center;">단계</th><th style="text-align:center;">요청</th><th>계약일</th><th>계약금액</th><th>이익금액</th><th>만료일</th><th>영업담당</th><th></th></tr></thead>
+        <table><thead><tr><th>계약코드</th><th>계약명</th><th>고객사</th><th>벤더사</th><th style="text-align:center;">단계</th><th>계약일</th><th>계약금액</th><th>이익금액</th><th>만료일</th><th>영업담당</th><th style="text-align:center;">계산서</th><th></th></tr></thead>
         <tbody>${list.map(c=>{
           const isOpen = state.ctrExpandedId===c.id;
           const reqBadge = c.request==='계산서 요청' ? `<span class="badge gold">계산서 요청</span>` : c.request==='완료' ? `<span class="badge green">완료</span>` : '-';
