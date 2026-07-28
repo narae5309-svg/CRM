@@ -226,7 +226,7 @@
       rows = state.opportunities.map(o=>({'영업기회명':o.name,'고객사':custName(o.customerId),'벤더사':o.bizType,'계약예상일':o.expectedDate,'계약예상금액':o.expectedAmount,'영업담당':o.salesRep,'단계':o.stage,'비고':o.remarks||''}));
       filename='영업기회관리.xlsx';
     } else if(state.tab==='contracts'){
-      rows = state.contracts.map(c=>({'계약코드':c.code,'계약명':c.name,'고객사':custName(c.customerId),'벤더사':c.bizType,'단계':c.stage,'요청':c.request,'계약일':c.contractDate,'계약금액':c.amount,'이익금액':c.profitAmount,'만료일':c.expiryDate||'','구매담당자':c.buyerContact||'','구매담당자이메일':c.buyerEmail||'','계산서발행일자':c.invoiceDate||'','영업담당':c.salesRep,'비고':c.remarks||''}));
+      rows = state.contracts.map(c=>({'계약코드':c.code,'계약명':c.name,'고객사':custName(c.customerId),'벤더사':c.bizType,'단계':c.stage,'계산서':c.request,'계약일':c.contractDate,'계약금액':c.amount,'이익금액':c.profitAmount,'만료일':c.expiryDate||'','구매담당자':c.buyerContact||'','구매담당자이메일':c.buyerEmail||'','계산서발행일자':c.invoiceDate||'','영업담당':c.salesRep,'비고':c.remarks||''}));
       filename='계약관리.xlsx';
     } else if(state.tab==='maintenance'){
       rows = state.maintenance.map(m=>({'계약코드':contractCode(m.contractId),'유지보수명':m.name,'고객사':contractCustomerName(m.contractId),'벤더사':contractVendor(m.contractId),'시작일':m.startDate||'','종료일':m.endDate||'','결제주기':m.billingCycle,'금액':m.amount,'갱신여부':m.renewalType,'담당자':m.salesRep,'비고':m.remarks||''}));
