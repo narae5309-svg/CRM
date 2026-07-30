@@ -1462,7 +1462,7 @@
     const expiring = expiringMaintenance();
     return `
       <div class="page-title">유지보수계약관리</div>
-      <div class="page-sub">판매 계약에 연결된 유지보수(갱신) 계약을 관리합니다.</div>
+      <div class="page-sub">유지보수(갱신) 계약을 관리합니다.</div>
       ${expiring.length===0?'':`
       <div class="alert-box"><h4 class="alertToggle" data-kind="mt" style="cursor:pointer; user-select:none;">⚠ 만료 임박 유지보수 (${expiring.length}건) <span style="font-size:11px; font-weight:400;">${state.alertCollapsed.mt?'▸ 펼치기':'▾ 접기'}</span></h4>
         ${state.alertCollapsed.mt?'':`<div class="alert-box-list">${expiring.map(m=>`<div class="alert-item"><span>${esc(m.name)} · ${esc(contractCustomerName(m.contractId))}</span><span><span class="badge warn">D-${daysUntil(m.endDate)}</span> ${esc(m.endDate)} <button class="alertDismissBtn" data-kind="mt" data-id="${m.id}" title="확인" style="border:none; background:var(--accent); color:#fff; border-radius:50%; width:18px; height:18px; cursor:pointer; font-size:11px; line-height:1; margin-left:6px; vertical-align:middle;">&#10003;</button></span></div>`).join('')}</div>`}
@@ -1849,7 +1849,7 @@
       </div>`;
     return `
       <div class="page-title">통합분석</div>
-      <div class="page-sub">기간 단위와 키워드로 계약 현황을 조회합니다. 아래 기간을 선택하면 담당자별·벤더사별 현황도 같은 기간 기준으로 조회됩니다. 주황 막대(이익)는 초록/파랑 막대(계약금액)와 같은 기준으로 표시되어 비율을 직접 비교할 수 있어요. 벤더사별 현황은 계약에 연결된 품목 데이터를 기준으로 정확히 계산됩니다 (건수는 품목 줄 수 기준).</div>
+      <div class="page-sub">기간 단위와 키워드로 계약 현황을 조회합니다.</div>
       <div class="stat-row">
         <div class="stat-box"><div class="num">${state.contracts.length}</div><div class="lbl">총 계약 건수</div></div>
         <div class="stat-box blue"><div class="num">${won(totalAmt)}</div><div class="lbl">총 계약금액</div></div>
